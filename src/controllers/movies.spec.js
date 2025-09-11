@@ -68,7 +68,7 @@ describe('movies controller', () => {
     it('should update an existing movie', async () => {
       const req = { params, body }
 
-      jest.spyOn(Movie, 'update').mockResolvedValue([1]) // Sequelize returns number of affected rows
+      jest.spyOn(Movie, 'update').mockResolvedValue([1]) // Affected rows
 
       await updateMovie(req, res, next)
 
@@ -96,6 +96,44 @@ describe('movies controller', () => {
       jest.spyOn(Movie, 'update').mockRejectedValue(mockError)
 
       await updateMovie(req, res, next)
+
+      expect(next).toHaveBeenCalledWith(mockError)
+      expect(res.sendStatus).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('deleteMovie()', () => {
+    it('should soft delete a movie', async () => {
+      const req = { params }
+
+      jest.spyOn(Movie, 'update').mockResolvedValue([1])
+
+      await deleteMovie(req, res, next)
+
+      expect(res.sendStatus).toHaveBeenCalledWith(204)
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should return 404 if movie never existed', async () => {
+      const req = { params }
+
+      jest.spyOn(Movie, 'update').mockResolvedValue([0])
+
+      await deleteMovie(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(404)
+      expect(res.json).toHaveBeenCalledWith({ error: 'Movie not found' })
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should handle other errors', async () => {
+      const req = { params }
+
+      const mockError = new Error('Database error')
+
+      jest.spyOn(Movie, 'update').mockRejectedValue(mockError)
+
+      await deleteMovie(req, res, next)
 
       expect(next).toHaveBeenCalledWith(mockError)
       expect(res.sendStatus).not.toHaveBeenCalled()

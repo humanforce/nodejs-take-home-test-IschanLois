@@ -1,14 +1,16 @@
 import express from 'express'
 
+import { moviesController } from '../controllers/index.js'
+
 const router = express.Router()
 
-router.get('/', (req, res) => { res.status(200).send('Hello World!') })
+router.get('/', moviesController.getTopRatedMovies)
 
-router.post('/', () => {})
+router.post('/', moviesController.createMovie)
 
-router.patch('/:movieId', () => {})
+router.patch('/:movieId', moviesController.updateMovie)
 
-router.delete('/:movieId', () => {})
+router.delete('/:movieId', moviesController.deleteMovie)
 
 export default router
 

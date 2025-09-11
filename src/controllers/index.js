@@ -1,0 +1,1 @@
+export * as moviesController from './movies.js'

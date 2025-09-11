@@ -1,6 +1,9 @@
 import { beforeEach, describe, jest } from '@jest/globals'
 
-import { createMovie } from './movies'
+import {
+  createMovie,
+  updateMovie,
+} from './movies'
 import { Movie } from '../models'
 
 describe('movies controller', () => {
@@ -58,6 +61,44 @@ describe('movies controller', () => {
       expect(next).toHaveBeenCalledWith(mockError)
       expect(res.status).not.toHaveBeenCalled()
       expect(res.json).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('updateMovie()', () => {
+    it('should update an existing movie', async () => {
+      const req = { params, body }
+
+      jest.spyOn(Movie, 'update').mockResolvedValue([1]) // Sequelize returns number of affected rows
+
+      await updateMovie(req, res, next)
+
+      expect(res.sendStatus).toHaveBeenCalledWith(204)
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should return 404 if movie not found', async () => {
+      const req = { params, body }
+
+      jest.spyOn(Movie, 'update').mockResolvedValue([0]) // No rows affected
+
+      await updateMovie(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(404)
+      expect(res.json).toHaveBeenCalledWith({ error: 'Movie not found' })
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should handle other errors', async () => {
+      const req = { params, body }
+
+      const mockError = new Error('Database error')
+
+      jest.spyOn(Movie, 'update').mockRejectedValue(mockError)
+
+      await updateMovie(req, res, next)
+
+      expect(next).toHaveBeenCalledWith(mockError)
+      expect(res.sendStatus).not.toHaveBeenCalled()
     })
   })
 })

@@ -1,9 +1,11 @@
 import express from 'express'
 
+import { movieReviewsController } from '../controllers/index.js'
+
 const router = express.Router({ mergeParams: true })
 
-router.get('/', (req, res) => { res.status(200).send('Hello from movie reviews!') })
+router.get('/', movieReviewsController.getMovieReviews)
 
-router.post('/', () => {})
+router.post('/', movieReviewsController.createMovieReview)
 
 export default router

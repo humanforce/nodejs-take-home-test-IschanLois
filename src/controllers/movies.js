@@ -39,7 +39,22 @@ export const updateMovie = async (req, res, next) => {
 }
 
 export const deleteMovie = async (req, res, next) => {
+  const { movieId } = req.params
 
+  try {
+    const [affectedRows] = await Movie.update({ is_deleted: true }, {
+      where: { movie_id: movieId },
+    })
+
+    if (affectedRows === 0) {
+      res.status(404).json({ error: 'Movie not found' })
+      return
+    }
+
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const getTopRatedMovies = async (req, res, next) => {

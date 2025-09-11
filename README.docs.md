@@ -8,3 +8,7 @@ Movie
 Reviews
 - post a rating (1 - 5 starts) + review details (required) for content evaluation if it is meaningful - POST
 - Average rating + List of reviews - GET
+
+# Domain model
+
+![domain-model](./domain-model.jpg)

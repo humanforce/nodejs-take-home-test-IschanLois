@@ -1,0 +1,20 @@
+{
+  "name": "movie-reviews-api",
+  "version": "1.0.0",
+  "description": "A REST API for a movie-reviws system",
+  "homepage": "https://github.com/humanforce/nodejs-take-home-test-IschanLois#readme",
+  "bugs": {
+    "url": "https://github.com/humanforce/nodejs-take-home-test-IschanLois/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/humanforce/nodejs-take-home-test-IschanLois.git"
+  },
+  "license": "ISC",
+  "author": "christianlois.olo@gmail.com",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

@@ -16,7 +16,20 @@ export const uploadCoverImage = async (req, res, next) => {
 }
 
 export const updateMovie = async (req, res, next) => {
-  
+  const payload = req.body
+  const { movieId } = req.params
+
+  try {
+    await Movie.update(payload, {
+      where: {
+        movie_id: movieId,
+        is_deleted: false,
+      },
+    })
+    res.sendStatus(204)
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const deleteMovie = async (req, res, next) => {

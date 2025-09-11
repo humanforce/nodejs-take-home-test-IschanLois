@@ -1,5 +1,14 @@
+import Movie from '../models/Movie.js'
+
 export const createMovie = async (req, res, next) => {
-  res.status(201).json({ message: 'Movie created!' })
+  const payload = req.body
+
+  try {
+    const movie = await Movie.create(payload)
+    res.status(201).json(movie)
+  } catch (error) {
+    next(error)
+  }
 }
 
 export const uploadCoverImage = async (req, res, next) => {

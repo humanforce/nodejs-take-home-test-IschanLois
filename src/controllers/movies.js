@@ -20,12 +20,18 @@ export const updateMovie = async (req, res, next) => {
   const { movieId } = req.params
 
   try {
-    await Movie.update(payload, {
+    const [affectedRows] = await Movie.update(payload, {
       where: {
         movie_id: movieId,
         is_deleted: false,
       },
     })
+
+    if (affectedRows === 0) {
+      res.status(404).json({ error: 'Movie not found' })
+      return
+    }
+
     res.sendStatus(204)
   } catch (error) {
     next(error)

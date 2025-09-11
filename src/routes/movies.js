@@ -8,6 +8,8 @@ router.get('/', moviesController.getTopRatedMovies)
 
 router.post('/', moviesController.createMovie)
 
+router.post('/images', moviesController.uploadCoverImage)
+
 router.patch('/:movieId', moviesController.updateMovie)
 
 router.delete('/:movieId', moviesController.deleteMovie)

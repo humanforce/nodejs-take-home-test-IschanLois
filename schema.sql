@@ -17,6 +17,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS movies;
 CREATE TABLE movies (
   movie_id SERIAL NOT NULL,
+  release_date DATE NOT NULL,
   title VARCHAR(255) NOT NULL,
   cover_url TEXT,
   synopsis VARCHAR(255) NOT NULL,
@@ -74,12 +75,12 @@ INSERT INTO artists (first_name, last_name) VALUES
   ('Martin', 'Scorsese'),
   ('James', 'Cameron');
 
-INSERT INTO movies (title, cover_url, synopsis, director_id, writer_id) VALUES
-  ('Inception', 'https://example.com/inception.jpg', 'A thief who steals corporate secrets through the use of dream-sharing technology.', 2, 2),
-  ('Pulp Fiction', 'https://example.com/pulpfiction.jpg', 'The lives of two mob hitmen, a boxer, a gangster''s wife, and a pair of diner bandits intertwine in four tales of violence and redemption.', 3, 3),
-  ('Jurassic Park', 'https://example.com/jurassicpark.jpg', 'During a preview tour, a theme park suffers a major power breakdown that allows its cloned dinosaur exhibits to run amok.', 1, 1),
-  ('The Wolf of Wall Street', 'https://example.com/wolfofwallstreet.jpg', 'Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.', 4, 4),
-  ('Avatar', 'https://example.com/avatar.jpg', 'A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.', 5, 5);
+INSERT INTO movies (title, release_date, cover_url, synopsis, director_id, writer_id) VALUES
+  ('Inception', '2010-01-01', 'https://example.com/inception.jpg', 'A thief who steals corporate secrets through the use of dream-sharing technology.', 2, 2),
+  ('Pulp Fiction', '2001-01-01', 'https://example.com/pulpfiction.jpg', 'The lives of two mob hitmen, a boxer, a gangster''s wife, and a pair of diner bandits intertwine in four tales of violence and redemption.', 3, 3),
+  ('Jurassic Park', '2004-01-01', 'https://example.com/jurassicpark.jpg', 'During a preview tour, a theme park suffers a major power breakdown that allows its cloned dinosaur exhibits to run amok.', 1, 1),
+  ('The Wolf of Wall Street', '2005-01-01', 'https://example.com/wolfofwallstreet.jpg', 'Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.', 4, 4),
+  ('Avatar', '2006-01-01', 'https://example.com/avatar.jpg', 'A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.', 5, 5);
 
 INSERT INTO users (username, password, role) VALUES
   ('admin', '$2b$12$KIXQJZ5eF8E6jZ1Z6Z6Z6uJ8J8J8J8J8J8J8J8J8J8J8J8J8J8J8', 'admin'), -- password: adminpass

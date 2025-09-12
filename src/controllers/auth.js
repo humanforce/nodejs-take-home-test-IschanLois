@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcrypt'
+import { hash } from 'bcrypt'
 
 import ApiError from '../services/ApiError.js'
 import { User } from '../models/index.js'
@@ -8,7 +8,7 @@ export const login = (req, res, next) => {
 }
 
 export const signup = async (req, res, next) => {
-  const { username, password, role } = req.body
+  const { username, password, role = 'user' } = req.body
 
   if (!username || !password) {
     return next(new ApiError('Username and password are required', 400))
@@ -26,7 +26,7 @@ export const signup = async (req, res, next) => {
     const passwordHash = await hash(password, saltRounds)
     const newUser = await User.create({ username, user_role: role, user_password: passwordHash })
 
-    return res.status(201).json({ user_id: newUser.user_id, username: newUser.username })
+    return res.status(201).json({ username: newUser.username })
 
   } catch (error){
 

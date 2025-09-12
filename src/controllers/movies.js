@@ -1,4 +1,4 @@
-import Movie from '../models/Movie.js'
+import { Movie } from '../models/index.js'
 
 export const createMovie = async (req, res, next) => {
   const payload = req.body

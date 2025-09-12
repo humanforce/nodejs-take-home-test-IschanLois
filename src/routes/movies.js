@@ -10,7 +10,7 @@ router.get('/', moviesController.getTopRatedMovies)
 
 router.post('/', moviesController.createMovie)
 
-router.post('/:movieId/images', upload.single('movie-cover'),  moviesController.uploadCoverImage, multerErrorHandler)
+router.post('/:movieId/images', upload.single('cover'),  moviesController.uploadCoverImage, multerErrorHandler)
 
 router.patch('/:movieId', moviesController.updateMovie)
 

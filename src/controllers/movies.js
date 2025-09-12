@@ -1,3 +1,5 @@
+import { join } from 'node:path'
+
 import { Movie } from '../models/index.js'
 
 export const createMovie = async (req, res, next) => {
@@ -16,9 +18,7 @@ export const uploadCoverImage = async (req, res, next) => {
     return res.status(400).json({ error: 'No file uploaded' })
   }
 
-  console.log(req.file)
-
-  res.status(201)
+  res.status(201).json({ file_url: join('assets', req.file.filename) })
 }
 
 export const updateMovie = async (req, res, next) => {

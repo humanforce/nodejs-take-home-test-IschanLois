@@ -9,7 +9,7 @@ export default class MovieReview extends Sequelize.Model {
    * 2. Average is reasonably cheap to query for smaller datasets
    * 3. Have some decoupling with list of reviews, so that we can paginate reviews
    */
-  static async getMovieRatingAndReviews (movieId, limit = 10, offset = 0) {
+  static async getMovieRatingAndReviews (movieId, limit, offset) {
     const movieRatingQuery = sequelizeInstance.query(
       `SELECT m.movie_id, m.title, m.is_deleted, AVG(r.rating) AS average_rating
         FROM movies m

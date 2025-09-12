@@ -3,10 +3,11 @@ import { MovieReview } from '../models/index.js'
 
 export const getMovieReviews = async (req, res, next) => {
   const { movieId } = req.params
+  const { page = 1, limit = 10 } = req.query
 
   try {
 
-    const result = await MovieReview.getMovieRatingAndReviews(movieId)
+    const result = await MovieReview.getMovieRatingAndReviews(movieId, limit, page)
 
     if (!result || result.is_deleted) {
       return next(new ApiError('Movie not found', 404))

@@ -12,7 +12,13 @@ export const createMovie = async (req, res, next) => {
 }
 
 export const uploadCoverImage = async (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' })
+  }
 
+  console.log(req.file)
+
+  res.status(201)
 }
 
 export const updateMovie = async (req, res, next) => {

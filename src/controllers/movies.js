@@ -58,5 +58,26 @@ export const deleteMovie = async (req, res, next) => {
 }
 
 export const getTopRatedMovies = async (req, res, next) => {
+  if (!req.query.limit || isNaN(req.query.limit)) {
+    return res.status(400).json({ error: 'Invalid limit parameter' })
+  }
 
+  const { limit } = req.query
+
+  if (limit < 1 || limit > 100) {
+    return res.status(400).json({ error: 'Limit must be between 1 and 100' })
+  }
+
+  try {
+    const response = await Movie.getTopMoviesByRating(limit)
+
+    if (response.length === 0) {
+      // request is valid, we just have insufficient data
+      return res.status(200).json({ message: 'No movies with rating yet' })
+    }
+
+    res.status(200).json(response)
+  } catch (error) {
+    next(error)
+  }
 }

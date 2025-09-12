@@ -2,7 +2,24 @@ import Sequelize from 'sequelize'
 
 import sequelizeInstance from '../services/sequelize.js'
 
-export default class Movie extends Sequelize.Model {}
+export default class Movie extends Sequelize.Model {
+  static getTopMoviesByRating(limit) {
+    return sequelizeInstance.query(
+      `SELECT m.movie_id, m.title, AVG(r.rating) AS average_rating
+        FROM movies m
+        JOIN reviews r ON m.movie_id = r.movie_id
+        WHERE m.is_deleted = false
+        GROUP BY m.movie_id
+        ORDER BY average_rating DESC
+        LIMIT :limit;
+      `,
+      {
+        type: Sequelize.QueryTypes.SELECT,
+        replacements: { limit }
+      }
+    )
+  }
+}
 
 Movie.init({
   movie_id: {

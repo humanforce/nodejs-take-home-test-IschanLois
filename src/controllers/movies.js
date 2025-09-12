@@ -19,6 +19,7 @@ export const uploadCoverImage = async (req, res, next) => {
     return next(new ApiError('No file uploaded', 400))
   }
 
+  // simulates (using local path) an HTTPS pre-signed urls returned by an object storage
   res.status(201).json({ file_url: `https://${join('assets', req.file.filename)}` })
 }
 

@@ -13,7 +13,8 @@ export default (req, res, next) => {
 
   try {
 
-    jwt.verify(token, process.env.JWT_SECRET)
+    const { username } = jwt.verify(token, process.env.JWT_SECRET)
+    req.user = username
     next()
 
   } catch {

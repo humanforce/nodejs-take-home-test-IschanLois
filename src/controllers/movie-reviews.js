@@ -23,7 +23,8 @@ export const getMovieReviews = async (req, res, next) => {
 
 export const createMovieReview = async (req, res, next) => {
   const { movieId } = req.params
-  const payload = { ...req.body, movie_id: movieId }
+  const username = req.user
+  const payload = { ...req.body, username, movie_id: movieId }
 
   try {
 

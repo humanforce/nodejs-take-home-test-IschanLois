@@ -13,7 +13,6 @@ describe('movie-reviews controller', () => {
     rating: 5,
     heading: 'Awesome!',
     body: 'Best movie ever!',
-    username: 'user1'
   }
 
   beforeEach(() => {

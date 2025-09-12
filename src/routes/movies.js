@@ -6,7 +6,7 @@ import multerErrorHandler from '../middlewares/multer-error-handler.js'
 
 const router = express.Router()
 
-router.get('/', moviesController.getTopRatedMovies)
+router.get('/top-rated', moviesController.getTopRatedMovies)
 
 router.post('/', moviesController.createMovie)
 

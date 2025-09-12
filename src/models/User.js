@@ -3,9 +3,19 @@ import Sequelize from 'sequelize'
 import sequelizeInstance from '../services/sequelize.js'
 
 export default class User extends Sequelize.Model {
-  static findUserByUsername (username) {
+
+  static findByUsername ({
+    username,
+    includePassword = false,
+  }) {
+    const attributes = ['username', 'role']
+
+    if (includePassword) {
+      attributes.push('password')
+    }
+
     return sequelizeInstance.query(
-      `SELECT username
+      `SELECT ${attributes.join(', ')}
       FROM users
       WHERE username = :username`,
       {
@@ -15,6 +25,7 @@ export default class User extends Sequelize.Model {
       },
     )
   }
+
 }
 
 User.init({
@@ -24,11 +35,11 @@ User.init({
     allowNull: false,
     unique: true,
   },
-  user_password: {
+  password: {
     type: Sequelize.DataTypes.TEXT,
     allowNull: false,
   },
-  user_role: {
+  role: {
     type: Sequelize.DataTypes.ENUM('user', 'admin'),
     allowNull: false,
     defaultValue: 'user',

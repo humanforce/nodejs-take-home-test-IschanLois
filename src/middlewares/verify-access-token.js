@@ -1,4 +1,4 @@
-import ApiError from '../services/ApiError'
+import ApiError from '../services/ApiError.js'
 
 import jwt from 'jsonwebtoken'
 

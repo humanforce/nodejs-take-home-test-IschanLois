@@ -18,7 +18,7 @@ export const uploadCoverImage = async (req, res, next) => {
     return res.status(400).json({ error: 'No file uploaded' })
   }
 
-  res.status(201).json({ file_url: join('assets', req.file.filename) })
+  res.status(201).json({ file_url: `https://${join('assets', req.file.filename)}` })
 }
 
 export const updateMovie = async (req, res, next) => {

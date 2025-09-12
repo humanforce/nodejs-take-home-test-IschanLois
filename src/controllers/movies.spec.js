@@ -1,10 +1,11 @@
-import { beforeEach, describe, jest } from '@jest/globals'
+import { beforeEach, describe, expect, jest } from '@jest/globals'
 
 import {
   createMovie,
   updateMovie,
   deleteMovie,
   getTopRatedMovies,
+  uploadCoverImage,
 } from './movies'
 import { Movie } from '../models'
 
@@ -63,6 +64,31 @@ describe('movies controller', () => {
       expect(next).toHaveBeenCalledWith(mockError)
       expect(res.status).not.toHaveBeenCalled()
       expect(res.json).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('uploadCoverImage()', () => {
+    it('should upload a cover image', async () => {
+      const req = {
+        params,
+        file: { filename: 'cover.jpg' },
+      }
+
+      await uploadCoverImage(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(201)
+      expect(res.json).toHaveBeenCalledWith({ file_url: 'https://assets/cover.jpg' })
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should return 400 if no file uploaded', async () => {
+      const req = { params }
+
+      await uploadCoverImage(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(400)
+      expect(res.json).toHaveBeenCalledWith({ error: 'No file uploaded' })
+      expect(next).not.toHaveBeenCalled()
     })
   })
 

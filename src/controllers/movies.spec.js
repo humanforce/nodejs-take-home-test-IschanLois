@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, jest } from '@jest/globals'
 
+import ApiError from '../services/ApiError'
 import {
   createMovie,
   updateMovie,
@@ -86,9 +87,7 @@ describe('movies controller', () => {
 
       await uploadCoverImage(req, res, next)
 
-      expect(res.status).toHaveBeenCalledWith(400)
-      expect(res.json).toHaveBeenCalledWith({ error: 'No file uploaded' })
-      expect(next).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(new ApiError('No file uploaded', 400))
     })
   })
 
@@ -111,9 +110,7 @@ describe('movies controller', () => {
 
       await updateMovie(req, res, next)
 
-      expect(res.status).toHaveBeenCalledWith(404)
-      expect(res.json).toHaveBeenCalledWith({ error: 'Movie not found' })
-      expect(next).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(new ApiError('Movie not found', 404))
     })
 
     it('should handle other errors', async () => {
@@ -149,9 +146,7 @@ describe('movies controller', () => {
 
       await deleteMovie(req, res, next)
 
-      expect(res.status).toHaveBeenCalledWith(404)
-      expect(res.json).toHaveBeenCalledWith({ error: 'Movie not found' })
-      expect(next).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(new ApiError('Movie not found', 404))
     })
 
     it('should handle other errors', async () => {
@@ -203,9 +198,7 @@ describe('movies controller', () => {
 
       await getTopRatedMovies(req, res, next)
 
-      expect(res.status).toHaveBeenCalledWith(400)
-      expect(res.json).toHaveBeenCalledWith({ error: 'Invalid limit parameter' })
-      expect(next).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(new ApiError('Limit query parameter is required and must be a number', 400))
     })
 
     it('should return 400 for non-numeric limit', async () => {
@@ -213,9 +206,7 @@ describe('movies controller', () => {
 
       await getTopRatedMovies(req, res, next)
 
-      expect(res.status).toHaveBeenCalledWith(400)
-      expect(res.json).toHaveBeenCalledWith({ error: 'Invalid limit parameter' })
-      expect(next).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(new ApiError('Limit query parameter is required and must be a number', 400))
     })
 
     it('should return 400 for out-of-bounds limit', async () => {
@@ -223,9 +214,7 @@ describe('movies controller', () => {
 
       await getTopRatedMovies(req, res, next)
 
-      expect(res.status).toHaveBeenCalledWith(400)
-      expect(res.json).toHaveBeenCalledWith({ error: 'Limit must be between 1 and 100' })
-      expect(next).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(new ApiError('Limit must be between 1 and 100', 400))
     })
 
     it('should handle errors', async () => {

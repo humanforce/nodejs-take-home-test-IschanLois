@@ -5,11 +5,11 @@ export default (error, req, res, next) => {
     'SequelizeForeignKeyConstraintError',
   ])
 
+  let code = error.statusCode || 500
+
   if (badUserInput.has(error.name)) {
-    res.status(400)
-  } else {
-    res.status(500)
+    code = 400
   }
 
-  return res.json({ error: error.message })
+  return res.status(code).json({ error: error.message })
 }

@@ -1,3 +1,4 @@
+import ApiError from '../services/ApiError.js'
 import { MovieReview } from '../models/index.js'
 
 export const getMovieReviews = async (req, res, next) => {
@@ -8,7 +9,7 @@ export const getMovieReviews = async (req, res, next) => {
     const result = await MovieReview.getMovieRatingAndReviews(movieId)
 
     if (!result || result.is_deleted) {
-      return res.status(404).json({ message: 'Movie not found' })
+      return next(new ApiError('Movie not found', 404))
     }
 
     return res.status(200).json(result)

@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals'
 
+import ApiError from '../services/ApiError'
 import { MovieReview } from '../models'
 import { createMovieReview, getMovieReviews } from './movie-reviews'
 
@@ -57,9 +58,7 @@ describe('movie-reviews controller', () => {
 
       await getMovieReviews(req, res, next)
 
-      expect(res.status).toHaveBeenCalledWith(404)
-      expect(res.json).toHaveBeenCalledWith({ message: 'Movie not found' })
-      expect(next).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(new ApiError('Movie not found', 404))
     })
 
     it('should handle errors', async () => {

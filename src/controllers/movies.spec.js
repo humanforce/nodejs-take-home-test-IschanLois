@@ -3,6 +3,8 @@ import { beforeEach, describe, jest } from '@jest/globals'
 import {
   createMovie,
   updateMovie,
+  deleteMovie,
+  getTopRatedMovies,
 } from './movies'
 import { Movie } from '../models'
 
@@ -137,6 +139,79 @@ describe('movies controller', () => {
 
       expect(next).toHaveBeenCalledWith(mockError)
       expect(res.sendStatus).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('getTopRateMovies()', () => {
+    it('should get top rated movies with valid limit', async () => {
+      const req = { query: { limit: '5' } }
+
+      const mockTopMovies = [
+        { movie_id: 1, title: 'Inception', average_rating: 4.8 },
+        { movie_id: 2, title: 'The Dark Knight', average_rating: 4.7 },
+      ]
+
+      jest.spyOn(Movie, 'getTopMoviesByRating').mockResolvedValue(mockTopMovies)
+
+      await getTopRatedMovies(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(200)
+      expect(res.json).toHaveBeenCalledWith(mockTopMovies)
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should return 200 with message if no rated movies', async () => {
+      const req = { query: { limit: '5' } }
+
+      jest.spyOn(Movie, 'getTopMoviesByRating').mockResolvedValue([])
+
+      await getTopRatedMovies(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(200)
+      expect(res.json).toHaveBeenCalledWith({ message: 'No movies with rating yet' })
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should return 400 for missing limit', async () => {
+      const req = { query: {} }
+
+      await getTopRatedMovies(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(400)
+      expect(res.json).toHaveBeenCalledWith({ error: 'Invalid limit parameter' })
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should return 400 for non-numeric limit', async () => {
+      const req = { query: { limit: 'abc' } }
+
+      await getTopRatedMovies(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(400)
+      expect(res.json).toHaveBeenCalledWith({ error: 'Invalid limit parameter' })
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should return 400 for out-of-bounds limit', async () => {
+      const req = { query: { limit: '150' } }
+
+      await getTopRatedMovies(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(400)
+      expect(res.json).toHaveBeenCalledWith({ error: 'Limit must be between 1 and 100' })
+      expect(next).not.toHaveBeenCalled()
+    })
+
+    it('should handle errors', async () => {
+      const req = { query: { limit: '5' } }
+
+      const mockError = new Error('Database error')
+
+      jest.spyOn(Movie, 'getTopMoviesByRating').mockRejectedValue(mockError)
+
+      await getTopRatedMovies(req, res, next)
+
+      expect(next).toHaveBeenCalledWith(mockError)
     })
   })
 })

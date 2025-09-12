@@ -29,6 +29,7 @@ export const createMovieReview = async (req, res, next) => {
   try {
 
     const review = await MovieReview.create(payload)
+
     return res.status(201).json(review)
 
   } catch (error) {

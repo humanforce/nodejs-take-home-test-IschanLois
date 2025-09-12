@@ -7,10 +7,15 @@ export const createMovie = async (req, res, next) => {
   const payload = req.body
 
   try {
+
     const movie = await Movie.create(payload)
+
     res.status(201).json(movie)
+
   } catch (error) {
+
     next(error)
+
   }
 }
 
@@ -28,6 +33,7 @@ export const updateMovie = async (req, res, next) => {
   const { movieId } = req.params
 
   try {
+
     const [affectedRows] = await Movie.update(payload, {
       where: {
         movie_id: movieId,
@@ -40,8 +46,11 @@ export const updateMovie = async (req, res, next) => {
     }
 
     res.sendStatus(204)
+
   } catch (error) {
+
     next(error)
+
   }
 }
 
@@ -49,6 +58,7 @@ export const deleteMovie = async (req, res, next) => {
   const { movieId } = req.params
 
   try {
+
     const [affectedRows] = await Movie.update({ is_deleted: true }, {
       where: { movie_id: movieId },
     })
@@ -58,8 +68,11 @@ export const deleteMovie = async (req, res, next) => {
     }
 
     res.sendStatus(204)
+
   } catch (error) {
+
     next(error)
+
   }
 }
 
@@ -75,6 +88,7 @@ export const getTopRatedMovies = async (req, res, next) => {
   }
 
   try {
+
     const response = await Movie.getTopMoviesByRating(limit)
 
     if (response.length === 0) {
@@ -83,7 +97,10 @@ export const getTopRatedMovies = async (req, res, next) => {
     }
 
     res.status(200).json(response)
+
   } catch (error) {
+
     next(error)
+
   }
 }

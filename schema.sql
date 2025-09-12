@@ -9,8 +9,8 @@ CREATE TABLE artists (
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   username VARCHAR(50) NOT NULL,
-  password_hash TEXT NOT NULL,
-  role VARCHAR(20) NOT NULL DEFAULT 'user',
+  user_password TEXT NOT NULL,
+  user_role VARCHAR(20) NOT NULL DEFAULT 'user',
   PRIMARY KEY (username)
 );
 
@@ -81,7 +81,7 @@ INSERT INTO movies (title, cover_url, synopsis, director_id, writer_id) VALUES
   ('The Wolf of Wall Street', 'https://example.com/wolfofwallstreet.jpg', 'Based on the true story of Jordan Belfort, from his rise to a wealthy stock-broker living the high life to his fall involving crime, corruption and the federal government.', 4, 4),
   ('Avatar', 'https://example.com/avatar.jpg', 'A paraplegic Marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home.', 5, 5);
 
-INSERT INTO users (username, password_hash, role) VALUES
+INSERT INTO users (username, user_password, user_role) VALUES
   ('admin', '$2b$12$KIXQJZ5eF8E6jZ1Z6Z6Z6uJ8J8J8J8J8J8J8J8J8J8J8J8J8J8J8', 'admin'), -- password: adminpass
   ('user1', '$2b$12$KIXQJZ5eF8E6jZ1Z6Z6Z6uJ8J8J8J8J8J8J8J8J8J8J8J8J8', 'user'),  -- password: userpass
   ('user2', '$2b$12$KIXQJZ5eF8E6jZ1Z6Z6Z6uJ8J8J8J8J8J8J8J8J8J8J8J8', 'user');  -- password: userpass

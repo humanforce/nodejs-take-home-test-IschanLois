@@ -162,11 +162,11 @@ Check [schema.sql](/schema.sql) to see on how these attributes are defined.
   6. **Movie Cast**
     - A relationship table for mapping movies to actors since they have N-to-N relationship.
 
-# Endpoints
+## Endpoints
 
 For server to database integration, an ORM `sequelize` is used for sanitation and ease of writing to the DB. However, sequelize native methods are only used for writing, querying is done using `RAW` queries.
 
-## Movies
+### Movies
 
 1. GET - `/api/v1/movies/top-rated?limit=N`
   - gets the top N movies by average rating.
@@ -181,7 +181,7 @@ For server to database integration, an ORM `sequelize` is used for sanitation an
 5. DELETE - `/api/v1/movies/:movieId`
   - for deleting a movie.
 
-## Movie Reviews
+### Movie Reviews
 - Represent the relationship between movie and reviews
 
 1. GET - `/api/v1/movies/:movieId/reviews?limit=N&page=M`

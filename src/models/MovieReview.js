@@ -2,7 +2,48 @@ import Sequelize from 'sequelize'
 
 import sequelizeInstance from '../services/sequelize.js'
 
-export default class MovieReview extends Sequelize.Model {}
+export default class MovieReview extends Sequelize.Model {
+  /**
+   * Using separate queries here for these reasons:
+   * 1. Average tend to changes less often for larger datasets, hence a good candidate for caching
+   * 2. Average is reasonably cheap to query for smaller datasets
+   * 3. Have some decoupling with list of reviews, so that we can paginate reviews
+   */
+  static async getMovieRatingAndReviews (movieId, limit = 10, offset = 0) {
+    const movieRatingQuery = sequelizeInstance.query(
+      `SELECT m.movie_id, m.title, m.is_deleted, AVG(r.rating) AS average_rating
+        FROM movies m
+        JOIN reviews r ON m.movie_id = r.movie_id
+        WHERE m.movie_id = :movie_id
+        GROUP BY m.movie_id
+      `,
+      {
+        type: Sequelize.QueryTypes.SELECT,
+        replacements: { movie_id: movieId },
+      },
+    )
+
+    const movieReviewsQuery = sequelizeInstance.query(
+      `SELECT *
+      FROM reviews
+      WHERE movie_id = :movie_id
+      ORDER BY rating DESC
+      LIMIT :limit
+      OFFSET :offset`,
+      {
+        type: Sequelize.QueryTypes.SELECT,
+        replacements: { movie_id: movieId, limit, offset},
+      },
+    )
+
+    const [[movieRating], reviews] = await Promise.all([movieRatingQuery, movieReviewsQuery])
+
+    return {
+      ...movieRating,
+      reviews,
+    }
+  }
+}
 
 MovieReview.init({
   review_id: {

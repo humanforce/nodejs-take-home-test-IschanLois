@@ -169,17 +169,17 @@ For server to database integration, an ORM `sequelize` is used for sanitation an
 ### Movies
 
 1. GET - `/api/v1/movies/top-rated?limit=N`
-  - gets the top N movies by average rating.
-  - this uses `INNER JOIN` when matching movies with reviews. Meaning movies with no reviews would not be included in the ranking. This makes the data returned meaningful as it would not return random data without some heuristic.
+   - gets the top N movies by average rating.
+   - this uses `INNER JOIN` when matching movies with reviews. Meaning movies with no reviews would not be included in the ranking. This makes the data returned meaningful as it would not return random data without some heuristic.
 2. POST - `/api/v1/movies/`
-  - creates a new movies row in the database.
+   - creates a new movies row in the database.
 3. POST - `/api/v1/movies/:movieId/images`
-  - for uploading movie cover image.
-  - for simplicity this just checks the file extension and mimetype for sanitation.
+   - for uploading movie cover image.
+   - for simplicity this just checks the file extension and mimetype for sanitation.
 4. PATCH - `/api/v1/movies/:movieId`
-  - for editing movie details.
+   - for editing movie details.
 5. DELETE - `/api/v1/movies/:movieId`
-  - for deleting a movie.
+   - for deleting a movie.
 
 ### Movie Reviews
 - Represent the relationship between movie and reviews

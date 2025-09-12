@@ -1,4 +1,5 @@
 import { compare, hash } from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 import ApiError from '../services/ApiError.js'
 import { User } from '../models/index.js'
@@ -12,17 +13,25 @@ export const login = async (req, res, next) => {
       return next(new ApiError('Username and password are required', 400))
     }
 
-    const [user] = await User.findByUsernameWithPassword(username)
+    const user = await User.findByUsername({ username, includePassword: true })
 
     if (!user) {
-      return next(new ApiError('Invalid username', 401))
+      return next(new ApiError('Invalid username or password', 401))
     }
 
-    // const matchingPassword = await compare(password, user.user_password)
+    const matchingPassword = await compare(password, user.password)
 
-    // if () {}
+    if (!matchingPassword) {
+      return next(new ApiError('Invalid username or password', 401))
+    }
 
-    // return res.status(200).json({ username: req.user.username, role: req.user.user_role })
+    const jwtPayload = { username: user.username, role: user.role }
+    const token = jwt.sign(jwtPayload, process.env.JWT_SECRET, {
+      expiresIn: '24h',
+      algorithm: 'HS256',
+    })
+
+    return res.status(200).json({ token })
 
   } catch (error) {
 

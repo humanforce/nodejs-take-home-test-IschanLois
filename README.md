@@ -128,6 +128,7 @@ npm start
 ```
 curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoiYWRtaW4ifQ.0GnCYBlPZXVFHZhhzUbjXQy11IR26e3VgzrtZgLppqQ" "http://127.0.0.1:3000/api/v1/movies?limit=10"
 ```
+9. **optional** refer to [seeding](#seeding) section to seed the database with data from [TMDB](https://developer.themoviedb.org/)
 
 ## Domain model
 
@@ -196,3 +197,20 @@ For server to database integration, an ORM `sequelize` is used for sanitation an
 2. POST - `/api/v1/movies/:movieId/reviews`
    - for creating a movie review
 
+## Seeding
+
+We can seed the data from TMDB API to mock meaningful data.
+
+1. Generate an API key from [TMDB](https://developer.themoviedb.org/) by signing up or logging in.
+2. Copy your API key and supply the `TMDB_API_KEY` in [seed/.env](/seed/.env). Like so:
+```
+TMDB_API_URL=https://api.themoviedb.org/3
+TMDB_API_KEY=your_api_key
+...
+```
+3. Run the command for seeding.
+```
+npm run seed
+```
+
+> **_NOTE:_**  Currently I'm sometimes getting DNS errors for the TMDB api, making it unable to connect to the api sometimes. Might be a DNS configuration issue with my machine. But if you experience the same, just retry it until it succeeds.

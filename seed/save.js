@@ -2,6 +2,8 @@ import { Sequelize } from 'sequelize'
 
 import Artist from '../src/models/Artist.js'
 import Movie from '../src/models/Movie.js'
+import User from '../src/models/User.js'
+import MovieReview from '../src/models/MovieReview.js'
 
 const sequelize = new Sequelize({
   dialect: 'postgres',
@@ -14,12 +16,28 @@ const sequelize = new Sequelize({
 })
 
 const createMoviePayloads = (movies) => movies.map((movie) => ({
+  movie_id: movie.id,
   release_date: movie.release_date,
   title: movie.title,
   cover_url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
   synopsis: movie.overview,
   is_deleted: false,
 }))
+
+const createMovieReviewsPayloads = (movieReviews) => movieReviews.flatMap(({ movieId, reviews }) => {
+
+  return reviews.map((review) => {
+    const [heading, body] = review.content.split('.', 2)
+
+    return {
+      movie_id: movieId,
+      rating: Math.max(Math.ceil(review.author_details.rating / 2), 1), // Convert 10 scale to 5 scale
+      heading: heading,
+      body: body ?? null,
+      username: review.author,
+    }
+  })
+})
 
 const processDirectorAndWriter = (movieCredits) => {
   return movieCredits.reduce((prev, credits) => {
@@ -41,6 +59,7 @@ const processDirectorAndWriter = (movieCredits) => {
 export default async (movies, movieReviews, movieCredits) => {
   const { writers: writersPayload, directors: directorsPayload } = processDirectorAndWriter(movieCredits)
   const moviePayloads = createMoviePayloads(movies)
+  const reviewsPayload = createMovieReviewsPayloads(movieReviews)
 
   const transaction = await sequelize.transaction()
 
@@ -68,7 +87,18 @@ export default async (movies, movieReviews, movieCredits) => {
       { transaction, returning: true }
     )
 
-    transaction.commit()
+    await User.bulkCreate(
+      reviewsPayload.map((review) => ({ username: review.username, password: 'password'})),
+      { transaction, ignoreDuplicates: true }
+    )
+
+    await MovieReview.bulkCreate(
+      reviewsPayload,
+      { transaction }
+    )
+
+    await transaction.commit()
+    sequelize.close()
   } catch (error) {
 
     console.error('Error during bulk create:', error)

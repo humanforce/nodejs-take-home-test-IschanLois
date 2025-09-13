@@ -35,7 +35,7 @@ CREATE TABLE reviews (
   review_id SERIAL NOT NULL,
   movie_id INT NOT NULL,
   rating INT NOT NULL,
-  heading VARCHAR(255) NOT NULL,
+  heading TEXT NOT NULL,
   body TEXT,
   likes INT NOT NULL DEFAULT 0,
   dislikes INT NOT NULL DEFAULT 0,

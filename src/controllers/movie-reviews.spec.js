@@ -28,7 +28,7 @@ describe('movie-reviews controller', () => {
 
   describe('getMovieReviews()', () => {
     it('should return movie reviews and rating', async () => {
-      const req = { params }
+      const req = { params, query: { page: 1, limit: 10 } }
 
       const mockRatingAndReviews = {
         movie_id: 1,
@@ -51,7 +51,7 @@ describe('movie-reviews controller', () => {
     })
 
     it('should return 404 if movie not found', async () => {
-      const req = { params }
+      const req = { params, query: { page: 1, limit: 10 } }
 
       jest.spyOn(MovieReview, 'getMovieRatingAndReviews').mockResolvedValue(null)
 
@@ -61,7 +61,7 @@ describe('movie-reviews controller', () => {
     })
 
     it('should handle errors', async () => {
-      const req = { params }
+      const req = { params, query: { page: 1, limit: 10 } }
 
       const mockError = new Error('Database error')
 

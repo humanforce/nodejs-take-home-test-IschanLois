@@ -213,4 +213,4 @@ TMDB_API_KEY=your_api_key
 npm run seed
 ```
 
-> **_NOTE:_**  Currently I'm sometimes getting DNS errors for the TMDB api, making it unable to connect to the api sometimes. Might be a DNS configuration issue with my machine. But if you experience the same, just retry it until it succeeds.
+> **_NOTE:_**  Currently I'm sometimes getting DNS errors for the TMDB api, making it unable to connect to the api. Might be a DNS configuration issue with my machine. But if you experience the same, just retry it until it succeeds.

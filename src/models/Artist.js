@@ -8,8 +8,7 @@ Artist.init({
   artist_id: {
     type: Sequelize.DataTypes.INTEGER,
     primaryKey: true,
-    allowNull: false,
-    unique: true,
+    autoIncrement: true,
   },
   first_name: {
     type: Sequelize.DataTypes.TEXT(100),

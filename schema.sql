@@ -20,7 +20,7 @@ CREATE TABLE movies (
   release_date DATE NOT NULL,
   title VARCHAR(255) NOT NULL,
   cover_url TEXT,
-  synopsis VARCHAR(255) NOT NULL,
+  synopsis TEXT NOT NULL,
   director_id INT NOT NULL,
   writer_id INT NOT NULL,
   is_deleted BOOLEAN NOT NULL DEFAULT FALSE,

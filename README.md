@@ -99,6 +99,7 @@ Should you have any questions or need to clarify requirements, please reach out 
 Install the following dependencies
 - [Docker](https://docs.docker.com/engine/install/)
 - [Node.js](https://nodejs.org/en/download/) - or use nvm
+  - Node 20 was used for developing this API so for maximum compatibility use node v20
 
 ### Steps
 1. Clone this repository.

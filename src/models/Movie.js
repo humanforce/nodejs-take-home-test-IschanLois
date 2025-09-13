@@ -27,6 +27,10 @@ Movie.init({
     primaryKey: true,
     autoIncrement: true,
   },
+  release_date: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
   title: {
     type: Sequelize.STRING,
     allowNull: false

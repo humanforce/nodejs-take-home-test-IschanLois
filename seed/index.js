@@ -1,14 +1,12 @@
-import { join } from 'node:path'
-
 import axios from 'axios'
-import dotenv from 'dotenv'
+
+import './load-env.js'
+import save from './save.js'
 
 // CLEANUP API KEY!
 
-dotenv.config({ path: join(import.meta.dirname, '.env') })
-
 const axiosInstance = axios.create({
-  baseURL: process.env.TBDB_API_URL || 'http://localhost:3000',
+  baseURL: process.env.TMDB_API_URL || 'http://localhost:3000',
   timeout: 10000,
 })
 
@@ -39,4 +37,4 @@ const movieCreditsRequests = movies.map(({ id }) => axiosInstance({
 const movieCreditsResponses = (await Promise.all(movieCreditsRequests))
   .map(({ data }) => ({ movieId: data.id, cast: data.cast, crew: data.crew }))
 
-
+save(movies, reviewsResponses, movieCreditsResponses)

@@ -112,7 +112,7 @@ docker build -t postgres .
 ```
 docker run -p 5432:5432 --env-file .env.db.local -d --name postgres postgres
 ```
-5. **(optional)** check if the postgres container is running using:
+5. **(OPTIONAL)** check if the postgres container is running using:
 ```
 docker ps
 ```
@@ -126,9 +126,9 @@ npm start
 ```
 8. Validate that the server is up by sending a request. There should be a JSON string for initially loaded data.
 ```
-curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoiYWRtaW4ifQ.0GnCYBlPZXVFHZhhzUbjXQy11IR26e3VgzrtZgLppqQ" "http://127.0.0.1:3000/api/v1/movies?limit=10"
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoiYWRtaW4ifQ.0GnCYBlPZXVFHZhhzUbjXQy11IR26e3VgzrtZgLppqQ" "http://127.0.0.1:3000/api/v1/movies/top-rated?limit=10"
 ```
-9. **optional** refer to [seeding](#seeding) section to seed the database with data from [TMDB](https://developer.themoviedb.org/)
+9. **(OPTIONAL)** refer to [seeding](#seeding) section to seed the database with data from [TMDB](https://developer.themoviedb.org/)
 
 ## Domain model
 
@@ -167,6 +167,19 @@ Check [schema.sql](/schema.sql) to see on how these attributes are defined.
 ## Endpoints
 
 For server to database integration, an ORM `sequelize` is used for sanitation and ease of writing to the DB. However, sequelize native methods are only used for writing, querying is done using `RAW` queries.
+
+### Auth
+
+**IMPORTANT**: all request to the server apart from the `auth` requires a `Bearer token` (JWT) in Authorization header for authentication. You can use the `signup` endpoint to create a `user` and call the `login` endpoint to get a token. You can also use this token.
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoiYWRtaW4ifQ.0GnCYBlPZXVFHZhhzUbjXQy11IR26e3VgzrtZgLppqQ
+```
+
+1. POST - `/api/v1/auth/signup`
+   - creates a new `USER` using a name and a password.
+2. POST - `/api/v1/auth/login`
+   - creates a JWT session token for a user if the `username` and `password` in the request body is valid.
 
 ### Movies
 

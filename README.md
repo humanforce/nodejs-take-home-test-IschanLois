@@ -144,7 +144,7 @@ Check [schema.sql](/schema.sql) to see on how these attributes are defined.
    - For cover image, instead of storing the image as a `BLOB`, I decided to store a `cover_url` denoting an http url returned by an object storage. Given that a cover image can get quite big, this would be a bottleneck for writing to the relation.
    - A separate endpoint for image upload is created. This endpoint would return the http url that exposes the image. The consumer could use this endpoint before creating a movie. `cover_url` is set to NULLABLE to allow defer of image upload. The tradeoff on write complexity will not be that high given that it's just one more api call.
    - `is_deleted` field is for soft deletion. A movie has a 1-to-N relationship with reviews, and there could be numerous reviews. Cascading the delete would not be a good idea as it could lead to db load and server latency issues. Restricting is also not an option for current use case. Soft delete allows us to mark rows that could be cleaned up (together with relationships) by a job in non-peak hours.
-   - It has 1-to-N relation to artists table on `writer_id` and `director_id`
+   - It has N-to-1 relationship to artists table on `writer_id` and `director_id`
 
 2. **Reviews**
    - A relation representing a movie review.
@@ -162,7 +162,7 @@ Check [schema.sql](/schema.sql) to see on how these attributes are defined.
     - A relation representing people involved with movie making (writes, directors, actors).
 
   6. **Movie Cast**
-    - A relationship table for mapping movies to actors since they have N-to-N relationship.
+    - A relationship table for mapping movies to artists (actors) since they have N-to-N relationship.
 
 ## Endpoints
 
